@@ -1,0 +1,5 @@
+bedrock-agentcore
+strands-agents
+pyyaml
+requests
+python-dotenv

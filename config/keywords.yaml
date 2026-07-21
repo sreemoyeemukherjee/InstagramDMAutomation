@@ -1,0 +1,99 @@
+# Single source of truth for keyword -> resource mapping.
+# The content plan (content/reel_content_plan.md) and the agent (src/tools.py)
+# both read from this file, so a reel's CTA and the DM the bot actually sends
+# never drift apart. Add a new reel? Add a block here first.
+#
+# Fields:
+#   keyword       - what viewers comment (agent does fuzzy/case-insensitive matching,
+#                   so this is the canonical form, not a regex)
+#   resource_type - guide | github | blog | waitlist | link
+#   title         - human-readable name of the resource
+#   url           - placeholder; replace with the real link before going live
+#   reel_topic    - short description of the reel this keyword is tied to
+#   dm_intro      - a fragment the agent can draw on when drafting the DM
+#                   (agent still personalizes tone/wording per commenter)
+
+resources:
+  - keyword: AGENT
+    resource_type: waitlist
+    title: "Weekly Build Log Newsletter"
+    url: "https://example.com/newsletter"
+    reel_topic: "[Build log 0/7] Intro — ditching ManyChat/LinkDM/CreatorFlow to build my own DM agent on AWS Bedrock AgentCore"
+    dm_intro: "You're in — I'll send you every step of this build, including the parts that break. Here's the signup so it lands in your inbox"
+
+  - keyword: AGENTIC
+    resource_type: guide
+    title: "Agentic AI 101: From LLM Calls to Autonomous Agents"
+    url: "https://example.com/guides/agentic-ai-101"
+    reel_topic: "What 'agentic AI' actually means, in 60 seconds"
+    dm_intro: "Here's the guide that breaks down agentic AI without the hype"
+
+  - keyword: AWSBEDROCK
+    resource_type: github
+    title: "AgentCore Starter Template"
+    url: "https://github.com/example/agentcore-starter"
+    reel_topic: "[Build log 1-2/7] Built the logic offline first, then turned on the actual AI — and it didn't work on the first try"
+    dm_intro: "Here's the starter repo from the video — clone and go"
+
+  - keyword: RAG
+    resource_type: blog
+    title: "RAG Pipelines: What Breaks in Production"
+    url: "https://example.com/blog/rag-production-lessons"
+    reel_topic: "The RAG mistake almost every tutorial skips"
+    dm_intro: "Here's the deep-dive on the failure mode from the reel"
+
+  - keyword: MCP
+    resource_type: github
+    title: "MCP Server Boilerplate"
+    url: "https://github.com/example/mcp-boilerplate"
+    reel_topic: "Building your first MCP server in under 10 minutes"
+    dm_intro: "Here's the boilerplate repo so you can skip the setup"
+
+  - keyword: PROMPTING
+    resource_type: guide
+    title: "Prompt Patterns for Reliable Agent Behavior"
+    url: "https://example.com/guides/prompt-patterns"
+    reel_topic: "3 prompting patterns that fixed my flaky agent"
+    dm_intro: "Here's the pattern cheat-sheet from the reel"
+
+  # --- Build-in-public mini-series: one keyword per reel. ---
+  # Numbering (1-2/7, 3/7 ... 7/7) is in reel_topic so viewers can tell it's a
+  # series and go find the earlier ones. Keep the numbers in sync with the
+  # "Build-in-public mini-series" table in content/reel_content_plan.md.
+  # Note: stages 1 and 2 were combined into a single reel/keyword (AWSBEDROCK,
+  # above) — TESTGREEN was retired as a standalone keyword.
+
+  - keyword: HALLUCINATE
+    resource_type: blog
+    title: "The Tool Definition Line That Stopped My Agent From Hallucinating Links"
+    url: "https://example.com/blog/agent-hallucinated-a-url"
+    reel_topic: "[Build log 3/7] My agent invented a URL I never gave it — here's the trace + the fix"
+    dm_intro: "Here's the write-up on exactly what it hallucinated and the one-line fix"
+
+  - keyword: TOOLBUG
+    resource_type: blog
+    title: "Why My Agent Grabbed the Wrong Field for the DM"
+    url: "https://example.com/blog/agent-tool-parameter-bug"
+    reel_topic: "[Build log 4/7] It tried to DM a username instead of an ID — a tool-definition bug"
+    dm_intro: "Here's the breakdown of the tool-parameter mix-up and how the schema fixed it"
+
+  - keyword: SHIPPED
+    resource_type: guide
+    title: "Deploying an Agent to AWS Bedrock AgentCore Runtime — Checklist"
+    url: "https://example.com/guides/agentcore-deploy-checklist"
+    reel_topic: "[Build log 5/7] Deployed to AWS Bedrock AgentCore Runtime — here's what that actually took"
+    dm_intro: "Here's the deploy checklist so you skip the trial and error"
+
+  - keyword: LIVE
+    resource_type: waitlist
+    title: "Weekly Build Log Newsletter"
+    url: "https://example.com/newsletter"
+    reel_topic: "[Build log 6/7] Watch a real comment trigger a real DM — the first end-to-end run"
+    dm_intro: "If you want the full build-log series in your inbox, here's the signup"
+
+  - keyword: TRACE
+    resource_type: guide
+    title: "Debugging a Live Agent With AgentCore's Built-In Tracing"
+    url: "https://example.com/guides/agentcore-tracing-debugging"
+    reel_topic: "[Build log 7/7] How I debug this agent in production using AgentCore's tracing"
+    dm_intro: "Here's the guide on reading AgentCore traces to catch this kind of bug fast"
