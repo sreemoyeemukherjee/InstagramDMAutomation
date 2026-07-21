@@ -8,10 +8,9 @@ Flow: someone comments a keyword on a reel → the agent detects it → picks th
 matching resource (guide / repo / blog link) → drafts a reply in the
 account's voice → sends the DM.
 
-See [`content/reel_content_plan.md`](content/reel_content_plan.md) for the
-reel calendar and keyword strategy, and
-[`config/keywords.yaml`](config/keywords.yaml) for the keyword → resource
-mapping both the content plan and the agent read from.
+See [`config/keywords.yaml`](config/keywords.yaml) for the keyword → resource
+mapping the agent reads from. (Reel calendar / content strategy docs are
+kept in a local `content/` folder, gitignored — not part of this repo.)
 
 ## Architecture
 
@@ -46,9 +45,8 @@ see below.
 
 ```
 config/keywords.yaml       # keyword -> resource mapping (shared source of truth)
-content/reel_content_plan.md  # reel calendar + content strategy
 src/agent.py                # AgentCore entrypoint + Strands agent
-src/tools.py                 # pick_resource, send_instagram_dm (DRY_RUN-stubbed)
+src/tools.py                 # pick_resource, send_instagram_dm, post_public_comment_reply
 src/resource_config.py       # loads/queries config/keywords.yaml
 tests/test_local.py          # offline sanity checks (no AWS/IG credentials needed)
 ```
@@ -172,6 +170,5 @@ alternative local dev server with hot reload if you'd rather not run
 ## Adding a new reel / keyword
 
 1. Add a block to `config/keywords.yaml`.
-2. Add a row to the calendar in `content/reel_content_plan.md`.
-3. Redeploy (`agentcore launch`) so the running agent picks up the new
-   mapping.
+2. Redeploy (see "Deploying to AgentCore" above) so the running agent picks
+   up the new mapping.
