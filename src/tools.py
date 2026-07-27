@@ -78,13 +78,19 @@ def send_instagram_dm(comment_id: str, message: str) -> dict:
     ig_user_id = os.environ["INSTAGRAM_BUSINESS_ACCOUNT_ID"]
     url = f"https://{GRAPH_API_HOST}/{GRAPH_API_VERSION}/{ig_user_id}/messages"
 
-    response = requests.post(
-        url,
-        params={"access_token": access_token},
-        json={"recipient": {"comment_id": comment_id}, "message": {"text": message}},
-        timeout=10,
-    )
-    response.raise_for_status()
+    try:
+        response = requests.post(
+            url,
+            params={"access_token": access_token},
+            json={"recipient": {"comment_id": comment_id}, "message": {"text": message}},
+            timeout=10,
+        )
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        detail = e.response.text if e.response is not None else str(e)
+        print(f"\n--- send_instagram_dm FAILED ---\n{detail}\n---\n", file=sys.stderr)
+        return {"sent": False, "dry_run": False, "error": detail}
+
     return {"sent": True, "dry_run": False, "response": response.json()}
 
 
@@ -114,11 +120,17 @@ def post_public_comment_reply(comment_id: str, message: str) -> dict:
     access_token = os.environ["INSTAGRAM_ACCESS_TOKEN"]
     url = f"https://{GRAPH_API_HOST}/{GRAPH_API_VERSION}/{comment_id}/replies"
 
-    response = requests.post(
-        url,
-        params={"access_token": access_token},
-        json={"message": message},
-        timeout=10,
-    )
-    response.raise_for_status()
+    try:
+        response = requests.post(
+            url,
+            params={"access_token": access_token},
+            json={"message": message},
+            timeout=10,
+        )
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        detail = e.response.text if e.response is not None else str(e)
+        print(f"\n--- post_public_comment_reply FAILED ---\n{detail}\n---\n", file=sys.stderr)
+        return {"sent": False, "dry_run": False, "error": detail}
+
     return {"sent": True, "dry_run": False, "response": response.json()}

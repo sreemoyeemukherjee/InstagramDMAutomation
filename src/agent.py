@@ -90,7 +90,12 @@ For every request:
    everyone). Follow any public-reply style note included in the prompt, and
    vary the wording from previous replies the same way as the DM.
 7. Call `post_public_comment_reply` with that text and the same comment ID.
-8. Reply to the caller with a one-line summary of both things you sent.
+8. Reply to the caller with a one-line summary of what happened. Check each
+   tool result's `sent` field — if one action succeeded and the other
+   returned `sent: false` with an `error`, report that plainly (which
+   succeeded, which failed and why) rather than claiming both worked. A
+   failed public reply does not mean the private DM failed too, and vice
+   versa — report them independently.
 
 Never invent a resource or URL that `pick_resource` did not return.
 """
