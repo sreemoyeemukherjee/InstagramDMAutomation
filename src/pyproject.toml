@@ -1,0 +1,17 @@
+[project]
+name = "instadm-agent"
+version = "0.1.0"
+description = "Instagram reel-comment DM automation agent (AWS Bedrock AgentCore + Strands Agents)"
+requires-python = ">=3.11"
+dependencies = [
+    "bedrock-agentcore",
+    "strands-agents",
+    "pyyaml",
+    "requests",
+    "python-dotenv",
+    "boto3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

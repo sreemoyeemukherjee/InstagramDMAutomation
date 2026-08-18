@@ -18,6 +18,7 @@ visibility. Never put resource details in it.
 
 from __future__ import annotations
 
+import json
 import os
 import sys
 
@@ -32,6 +33,34 @@ GRAPH_API_VERSION = "v21.0"
 # to be graph.facebook.com.
 GRAPH_API_HOST = os.environ.get("GRAPH_API_HOST", "graph.instagram.com")
 DRY_RUN = os.environ.get("DRY_RUN", "true").lower() != "false"
+
+_instagram_credentials: dict | None = None
+
+
+def _get_instagram_credentials() -> dict:
+    """Instagram token + business account ID.
+
+    Deployed runtime sets INSTAGRAM_SECRET_ID (the secret's name, not its ARN
+    — GetSecretValue accepts either, and the name avoids baking the AWS
+    account ID into agentcore.json, which is git-tracked). Local dev falls
+    back to plain env vars from .env.
+    """
+    global _instagram_credentials
+    if _instagram_credentials is not None:
+        return _instagram_credentials
+
+    secret_id = os.environ.get("INSTAGRAM_SECRET_ID")
+    if secret_id:
+        import boto3
+
+        client = boto3.client("secretsmanager")
+        _instagram_credentials = json.loads(client.get_secret_value(SecretId=secret_id)["SecretString"])
+    else:
+        _instagram_credentials = {
+            "INSTAGRAM_ACCESS_TOKEN": os.environ["INSTAGRAM_ACCESS_TOKEN"],
+            "INSTAGRAM_BUSINESS_ACCOUNT_ID": os.environ["INSTAGRAM_BUSINESS_ACCOUNT_ID"],
+        }
+    return _instagram_credentials
 
 
 @tool
@@ -74,8 +103,9 @@ def send_instagram_dm(comment_id: str, message: str) -> dict:
             "note": "DRY_RUN is on — no request was sent. Set DRY_RUN=false once IG credentials are configured.",
         }
 
-    access_token = os.environ["INSTAGRAM_ACCESS_TOKEN"]
-    ig_user_id = os.environ["INSTAGRAM_BUSINESS_ACCOUNT_ID"]
+    credentials = _get_instagram_credentials()
+    access_token = credentials["INSTAGRAM_ACCESS_TOKEN"]
+    ig_user_id = credentials["INSTAGRAM_BUSINESS_ACCOUNT_ID"]
     url = f"https://{GRAPH_API_HOST}/{GRAPH_API_VERSION}/{ig_user_id}/messages"
 
     try:
@@ -117,7 +147,7 @@ def post_public_comment_reply(comment_id: str, message: str) -> dict:
             "note": "DRY_RUN is on — no request was sent. Set DRY_RUN=false once IG credentials are configured.",
         }
 
-    access_token = os.environ["INSTAGRAM_ACCESS_TOKEN"]
+    access_token = _get_instagram_credentials()["INSTAGRAM_ACCESS_TOKEN"]
     url = f"https://{GRAPH_API_HOST}/{GRAPH_API_VERSION}/{comment_id}/replies"
 
     try:

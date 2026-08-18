@@ -2,6 +2,11 @@
 
 Kept separate from tools.py so both the agent's tool layer and any offline
 script (e.g. validating the content plan) can reuse the same loader.
+
+Lives under src/config/ (not a project-root config/) so it's included in the
+self-contained src/ bundle AgentCore's CodeZip build packages and deploys —
+anything outside codeLocation ("src/" per agentcore.json) never reaches the
+deployed runtime.
 """
 
 from __future__ import annotations
@@ -11,7 +16,7 @@ from typing import Optional
 
 import yaml
 
-CONFIG_PATH = Path(__file__).resolve().parent.parent / "config" / "keywords.yaml"
+CONFIG_PATH = Path(__file__).resolve().parent / "config" / "keywords.yaml"
 
 
 def load_resources() -> list[dict]:

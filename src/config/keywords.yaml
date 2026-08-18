@@ -97,3 +97,13 @@ resources:
     url: "https://example.com/guides/agentcore-tracing-debugging"
     reel_topic: "[Build log 7/7] How I debug this agent in production using AgentCore's tracing"
     dm_intro: "Here's the guide on reading AgentCore traces to catch this kind of bug fast"
+
+  # --- Bonus reel: the Meta App / permissions debugging saga (not one of the
+  # numbered 7 stages — a standalone content piece). ---
+
+  - keyword: APP
+    resource_type: guide
+    title: "Meta App Setup & Permissions: The Full Guide"
+    url: "https://drive.google.com/file/d/17hJOF2ApCiE7zPu2ELaRP3xRYT9tKxSr/view?usp=sharing"
+    reel_topic: "[Bonus] The Meta App permissions saga — every dead end, and the actual fix (Dev vs Live mode)"
+    dm_intro: "Here's the full write-up — every dead end I chased and the one setting that actually fixed it"

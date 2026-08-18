@@ -1,0 +1,20 @@
+# Secrets (local environment files are never committed)
+.env.local
+
+# CDK Build Artifacts
+cdk/cdk.out/
+cdk/node_modules/
+
+# CLI Internals
+.cli/*
+
+# Ephemeral Staging
+.cache/*
+
+# Package build output (regenerate with `agentcore package`)
+*.zip
+instadm_agent/
+
+# Deployment target config + deployed-state both embed the real AWS account
+# ID — kept local rather than published.
+aws-targets.json

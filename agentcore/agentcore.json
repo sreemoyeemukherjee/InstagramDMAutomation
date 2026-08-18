@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.agentcore.aws.dev/v1/agentcore.json",
+  "name": "InstaDMAutomation",
+  "version": 1,
+  "managedBy": "CDK",
+  "tags": {
+    "agentcore:created-by": "agentcore-cli",
+    "agentcore:project-name": "InstaDMAutomation"
+  },
+  "runtimes": [
+    {
+      "name": "instadm_agent",
+      "build": "CodeZip",
+      "entrypoint": "agent.py",
+      "codeLocation": "src/",
+      "runtimeVersion": "PYTHON_3_11",
+      "envVars": [
+        { "name": "DRY_RUN", "value": "false" },
+        { "name": "GRAPH_API_HOST", "value": "graph.instagram.com" },
+        { "name": "INSTAGRAM_SECRET_ID", "value": "InstaDMAutomation/instagram-credentials" }
+      ],
+      "networkMode": "PUBLIC",
+      "protocol": "HTTP"
+    }
+  ],
+  "memories": [],
+  "knowledgeBases": [],
+  "credentials": [],
+  "evaluators": [],
+  "onlineEvalConfigs": [],
+  "agentCoreGateways": [],
+  "policyEngines": [],
+  "configBundles": [],
+  "abTests": [],
+  "harnesses": [],
+  "datasets": [],
+  "payments": []
+}
